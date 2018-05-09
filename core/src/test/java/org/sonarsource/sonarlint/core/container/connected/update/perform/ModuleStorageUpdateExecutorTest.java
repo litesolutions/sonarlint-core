@@ -19,6 +19,7 @@
  */
 package org.sonarsource.sonarlint.core.container.connected.update.perform;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -56,6 +57,7 @@ import org.sonarsource.sonarlint.core.proto.Sonarlint.QProfiles;
 import org.sonarsource.sonarlint.core.proto.Sonarlint.ServerInfos;
 import org.sonarsource.sonarlint.core.util.ProgressWrapper;
 import org.sonarsource.sonarlint.core.util.StringUtils;
+import org.sonarsource.sonarlint.core.util.ws.WsResponse;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.entry;
@@ -118,8 +120,8 @@ public class ModuleStorageUpdateExecutorTest {
     storagePaths = mock(StoragePaths.class);
     storageReader = mock(StorageReader.class);
     org.sonarsource.sonarlint.core.proto.Sonarlint.GlobalProperties.Builder propBuilder = GlobalProperties.newBuilder();
-    propBuilder.getMutableProperties().put("sonar.qualitygate", "2");
-    propBuilder.getMutableProperties().put("sonar.core.version", "5.5-SNAPSHOT");
+    propBuilder.putProperties("sonar.qualitygate", "2");
+    propBuilder.putProperties("sonar.core.version", "5.5-SNAPSHOT");
     when(storageReader.readGlobalProperties()).thenReturn(propBuilder.build());
     when(storageReader.readServerInfos()).thenReturn(ServerInfos.newBuilder().build());
 
@@ -138,7 +140,9 @@ public class ModuleStorageUpdateExecutorTest {
 
   @Test
   public void exception_ws_load_qps() throws IOException {
-    when(wsClient.get(getQualityProfileUrl())).thenThrow(IOException.class);
+    WsResponse ws = mock(WsResponse.class);
+    when(ws.contentStream()).thenReturn(new ByteArrayInputStream(new byte[] {1, 2, 3}));
+    when(wsClient.get(getQualityProfileUrl())).thenReturn(ws);
     File destDir = temp.newFolder();
     QProfiles.Builder builder = QProfiles.newBuilder();
 
@@ -174,12 +178,12 @@ public class ModuleStorageUpdateExecutorTest {
     moduleUpdate.update(MODULE_KEY_WITH_BRANCH, new ProgressWrapper(null));
 
     ModuleConfiguration moduleConfiguration = ProtobufUtil.readFile(destDir.toPath().resolve(StoragePaths.MODULE_CONFIGURATION_PB), ModuleConfiguration.parser());
-    assertThat(moduleConfiguration.getQprofilePerLanguage()).containsOnly(
+    assertThat(moduleConfiguration.getQprofilePerLanguageMap()).containsOnly(
       entry("cs", "cs-sonar-way-58886"),
       entry("java", "java-empty-74333"),
       entry("js", "js-sonar-way-60746"));
 
-    assertThat(moduleConfiguration.getModulePathByKey()).containsOnly(
+    assertThat(moduleConfiguration.getModulePathByKeyMap()).containsOnly(
       entry(MODULE_KEY_WITH_BRANCH, ""),
       entry(MODULE_KEY_WITH_BRANCH + "child1", "child 1"));
   }
@@ -189,10 +193,9 @@ public class ModuleStorageUpdateExecutorTest {
     File destDir = temp.newFolder();
     QProfiles.Builder builder = QProfiles.newBuilder();
 
-    Map<String, QProfiles.QProfile> mutableQprofilesByKey = builder.getMutableQprofilesByKey();
-    mutableQprofilesByKey.put("cs-sonar-way-58886", QProfiles.QProfile.newBuilder().build());
-    mutableQprofilesByKey.put("java-empty-74333", QProfiles.QProfile.newBuilder().build());
-    mutableQprofilesByKey.put("xoo2-basic-34035", QProfiles.QProfile.newBuilder().build());
+    builder.putQprofilesByKey("cs-sonar-way-58886", QProfiles.QProfile.newBuilder().build());
+    builder.putQprofilesByKey("java-empty-74333", QProfiles.QProfile.newBuilder().build());
+    builder.putQprofilesByKey("xoo2-basic-34035", QProfiles.QProfile.newBuilder().build());
 
     when(storageReader.readQProfiles()).thenReturn(builder.build());
     when(storagePaths.getModuleStorageRoot(MODULE_KEY_WITH_BRANCH)).thenReturn(destDir.toPath());
