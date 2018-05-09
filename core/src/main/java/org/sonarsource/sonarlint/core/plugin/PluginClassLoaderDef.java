@@ -22,6 +22,7 @@ package org.sonarsource.sonarlint.core.plugin;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 import java.io.File;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -38,6 +39,7 @@ class PluginClassLoaderDef {
   private final String basePluginKey;
   private final Map<String, String> mainClassesByPluginKey = new HashMap<>();
   private final List<File> files = new ArrayList<>();
+
   private final Mask mask = new Mask();
   private boolean selfFirstStrategy = false;
 

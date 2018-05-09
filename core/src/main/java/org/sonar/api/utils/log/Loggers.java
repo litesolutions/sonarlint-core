@@ -1,6 +1,6 @@
 /*
  * SonarLint Core - Implementation
- * Copyright (C) 2009-2017 SonarSource SA
+ * Copyright (C) 2009-2018 SonarSource SA
  * mailto:info AT sonarsource DOT com
  *
  * This program is free software; you can redistribute it and/or
@@ -25,6 +25,12 @@ import org.sonarsource.sonarlint.core.log.LogOutputDelegator;
 import org.sonarsource.sonarlint.core.log.SonarLintLoggerFactory;
 import org.sonarsource.sonarlint.core.util.LoggedErrorHandler;
 
+/**
+ * Overrides the behavior of loggers in the sonar API.
+ * Basically the factory always returns {@link SonarLintLogger}, which uses {@link LogOutputDelegator} to delegate
+ * the logging to an {@link LogOutput}.
+ * The LogOutput can be set dynamically at any time, for the executing thread. 
+ */
 public abstract class Loggers {
   private static final LogOutputDelegator logOutputDelegator = new LogOutputDelegator();
   private static final SonarLintLogger logger = new SonarLintLogger(logOutputDelegator);

@@ -1,6 +1,6 @@
 /*
  * SonarLint Core - Implementation
- * Copyright (C) 2009-2017 SonarSource SA
+ * Copyright (C) 2009-2018 SonarSource SA
  * mailto:info AT sonarsource DOT com
  *
  * This program is free software; you can redistribute it and/or
@@ -19,10 +19,14 @@
  */
 package org.sonar.api.utils.log;
 
+import org.sonar.api.utils.log.LoggerLevel;
 import org.sonarsource.sonarlint.core.client.api.common.LogOutput.Level;
 import org.sonarsource.sonarlint.core.log.LogOutputDelegator;
 import org.sonarsource.sonarlint.core.log.MessageFormat;
 
+/**
+ * This class can't be moved to another package because {@link BaseLogger} is not public.
+ */
 public class SonarLintLogger extends BaseLogger {
   private LogOutputDelegator logOutput;
 

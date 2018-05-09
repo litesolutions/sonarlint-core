@@ -1,5 +1,5 @@
 /*
- * SonarLint Core - Implementation
+ * SonarLint slf4j log adaptor
  * Copyright (C) 2009-2018 SonarSource SA
  * mailto:info AT sonarsource DOT com
  *
@@ -17,32 +17,25 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-package org.sonarsource.sonarlint.core.log;
+package org.slf4j;
 
-import org.sonar.api.utils.log.Logger;
-import org.sonar.api.utils.log.LoggerLevel;
-import org.sonar.api.utils.log.Loggers;
-import org.sonar.api.utils.log.SonarLintLogger;
+/**
+ * This class has the same signature has the {@link LoggerFactory} of slf4j.
+ * Instead of finding an implementation of slf4j, it creates a bridge between the slf4j API and the sonar logging API.
+ * It will always return the same slf4j Logger. This logger forwards all logs to a sonar API logger. 
+ */
+public class LoggerFactory {
+  private static final LoggerAdapter ADAPTER = new LoggerAdapter();
 
-public class SonarLintLoggerFactory extends Loggers {
-  private final SonarLintLogger logger;
-
-  public SonarLintLoggerFactory(SonarLintLogger logger) {
-    this.logger = logger;
+  private LoggerFactory() {
+    // only static methods
   }
 
-  @Override
-  protected Logger newInstance(String name) {
-    return logger;
+  public static Logger getLogger(String name) {
+    return ADAPTER;
   }
 
-  @Override
-  protected LoggerLevel getLevel() {
-    return LoggerLevel.DEBUG;
-  }
-
-  @Override
-  protected void setLevel(LoggerLevel level) {
-    // no op
+  public static Logger getLogger(Class clazz) {
+    return ADAPTER;
   }
 }
