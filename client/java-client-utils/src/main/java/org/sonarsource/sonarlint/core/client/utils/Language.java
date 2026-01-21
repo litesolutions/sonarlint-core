@@ -50,6 +50,7 @@ public enum Language {
   JSP("JSP"),
   VBNET("VB.NET"),
   XML("XML"),
+  OBJECTSCRIPT("ObjectScript"),
   YAML("YAML"),
   JSON("JSON"),
   GO("Go"),
@@ -132,6 +133,8 @@ public enum Language {
         return VBNET;
       case XML:
         return XML;
+      case OBJECTSCRIPT:
+        return OBJECTSCRIPT;
       case YAML:
         return YAML;
       case JSON:

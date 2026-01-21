@@ -32,7 +32,7 @@ import java.util.stream.Stream;
 public enum SonarLanguage {
 
   ABAP("abap", "abap", new String[]{".abap", ".ab4", ".flow", ".asprog"}, "sonar.abap.file.suffixes"),
-  APEX("apex", "sonarapex", new String[]{".cls", ".trigger"}, "sonar.apex.file.suffixes"),
+  APEX("apex", "sonarapex", new String[]{".trigger"}, "sonar.apex.file.suffixes"),
   C("c", "cpp", new String[]{".c", ".h"}, "sonar.c.file.suffixes"),
   CPP("cpp", "cpp", new String[]{".cc", ".cpp", ".cxx", ".c++", ".hh", ".hpp", ".hxx", ".h++", ".ipp"}, "sonar.cpp.file.suffixes"),
   CS("cs", "csharp", new String[]{".cs", ".razor"}, "sonar.cs.file.suffixes"),
@@ -45,7 +45,7 @@ public enum SonarLanguage {
   JCL("jcl", "jcl", new String[]{".jcl"}, "sonar.jcl.file.suffixes"),
   JS("js", Constants.JAVASCRIPT_PLUGIN_KEY, new String[]{".js", ".jsx", ".vue"}, "sonar.javascript.file.suffixes"),
   KOTLIN("kotlin", "kotlin", new String[]{".kt", ".kts"}, "sonar.kotlin.file.suffixes"),
-  PHP("php", "php", new String[]{"php", "php3", "php4", "php5", "phtml", "inc"}, "sonar.php.file.suffixes"),
+  PHP("php", "php", new String[]{"php", "php3", "php4", "php5", "phtml"}, "sonar.php.file.suffixes"),
   PLI("pli", "pli", new String[]{".pli"}, "sonar.pli.file.suffixes"),
   PLSQL("plsql", "plsql", new String[]{".sql", ".pks", ".pkb"}, "sonar.plsql.file.suffixes"),
   PYTHON("py", "python", new String[]{".py"}, "sonar.python.file.suffixes"),
@@ -61,6 +61,7 @@ public enum SonarLanguage {
   JSP("jsp", "web", new String[]{".jsp", ".jspf", ".jspx"}, "sonar.jsp.file.suffixes"),
   VBNET("vbnet", "vbnet", new String[]{".vb"}, "sonar.vbnet.file.suffixes"),
   XML("xml", "xml", new String[]{".xml", ".xsd", ".xsl"}, "sonar.xml.file.suffixes"),
+  OBJECTSCRIPT("objectscript", "objectscript", new String[]{".cls", ".mac", ".int", ".inc"}, "sonar.objectscript.file.suffixes"),
   YAML("yaml", Constants.JAVASCRIPT_PLUGIN_KEY, new String[]{".yml", "yaml"}, Constants.NO_PUBLIC_PROPERTY_PROVIDED_FOR_THIS_LANGUAGE),
   JSON("json", Constants.JAVASCRIPT_PLUGIN_KEY, new String[]{".json"}, Constants.NO_PUBLIC_PROPERTY_PROVIDED_FOR_THIS_LANGUAGE),
   GO("go", "go", new String[]{".go"}, "sonar.go.file.suffixes"),

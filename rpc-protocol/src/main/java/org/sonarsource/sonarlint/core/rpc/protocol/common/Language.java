@@ -59,6 +59,7 @@ public enum Language {
   TSQL,
   VBNET,
   XML,
+  OBJECTSCRIPT,
   YAML
 
 }
